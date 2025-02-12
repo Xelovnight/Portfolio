@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carousel PDF avec Swiper.js</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/pdfcarousel.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <img src="../assets/logo.png" />
+        <a href="../pages/aProposDeMoi.html">JUNGERS Enzo</a>
+      </div>
+      <div class="nav-links">
+        <a href="../pages/index.html">Acceuil</a>
+        <a href="../pages/CV.html">CV</a>
+        <a class="emplacement" href="../pages/GSB.html">Projets</a>
+        <a href="../pages/experiences.html">Expériences</a>
+        <a href="../pages/Veille.html">Veille</a>
+        <a href="../pages/Certification.html">Certifications</a>
+        <a href="../pages/aProposDeMoi.html">A propos de moi</a>
+      </div>
+      <button class="git"><i class="ri-github-fill"></i> Mes Projets</button>
+    </nav>
+
+    <div class="hero">
+      <div class="left-section">
+        <div class="top">
+          <h2>Galaxy Swiss Bourdin.</h2>
+          <p>
+            GSB ou <strong>Galaxy Swiss Bourdin</strong>, est une entreprise
+            pharmaceutique spécialisé dans la fabrication de médicamanent. Dans
+            notre contexte, nous reprenions le travail de stagiaires qui avait
+            fait la partie "Visiteur" qui sert à faire les demandes de
+            remboursement de frais forfaitaire et autre, et nous devions donc
+            faire la partie "Comptable" qui s'occupait de valider ces demandes
+            et de suivre leurs remboursements.
+          </p>
+
+          <div class="buttons">
+            <button class="git">
+              <i class="ri-github-fill"></i> Mon Github
+            </button>
+          </div>
+        </div>
+        <div class="bottom">
+          <p>Réseaux Sociaux :</p>
+          <div class="icons">
+            <a
+              href="https://x.com/EnzoJunger34208"
+              class="ri-twitter-x-line"
+            ></a>
+            <a
+              href="https://www.linkedin.com/in/enzo-jungers-6b0571312/"
+              class="ri-linkedin-box-line"
+            ></a>
+            <a
+              href="https://www.instagram.com/enzo_jungers/?hl=fr"
+              class="ri-instagram-line"
+            ></a>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/gsb.png" />
+    </div>
+
+    <div id="carouselpdf">
+      <div style="height: 100px"></div>
+      <div class="swiper-container">
+        <p id="loading">📄 Chargement du PDF...</p>
+        <div class="swiper-wrapper" id="pdf-carousel"></div>
+        <!-- Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+      </div>
+
+      <!-- Conteneur pour le bouton de téléchargement juste en dessous du carrousel -->
+      <div class="download-btn-container">
+        <button class="download-btn" onclick="downloadPDF()">
+          -> Télécharger le PDF
+        </button>
+      </div>
+
+      <!-- PDF.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+      <!-- Swiper.js -->
+      <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+      <script src="../JavaScript/pdfcarousel.js"></script>
+    </div>
+
+    <footer>
+      <a href="#">&uArr;</a>
+      <p>© 2024 JUNGERS Enzo</p>
+      <p>Réseaux Sociaux :</p>
+      <div class="icons2">
+        <a href="https://x.com/EnzoJunger34208" class="ri-twitter-x-line"></a>
+        <a
+          href="https://www.linkedin.com/in/enzo-jungers-6b0571312/"
+          class="ri-linkedin-box-line"
+        ></a>
+        <a
+          href="https://www.instagram.com/enzo_jungers/?hl=fr"
+          class="ri-instagram-line"
+        ></a>
+      </div>
+      <a href="#">&uArr;</a>
+    </footer>
+  </body>
+</html>

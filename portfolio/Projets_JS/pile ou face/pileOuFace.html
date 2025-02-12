@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="../../assets/logo.png" />
+      <link rel="stylesheet" type="text/css" href="pileOuFace.css">
+      <script src="pileOuFace.js"</script></script>
+    </head>
+  <body>
+    <nav>
+      <article class="logo">
+        <img src="../../assets/logo.png" />
+        <a href="../../pages/aProposDeMoi.html">JUNGERS Enzo</a>
+      </article>
+      <article class="nav-links">
+        <a href="../../pages/index.html">Acceuil</a>
+        <a href="../../pages/CV.html">CV</a>
+        <a href="../../pages/Projets.html">Projets</a>
+        <a href="../../pages/Veille.html">Veille</a>
+        <a href="../../pages/Certification.html">Certifications</a>
+        <a href="../../pages/aProposDeMoi.html">A propos de moi</a>
+      </article>
+      <button><i class="ri-github-fill"></i> Mes Projets</button>
+    </nav>
+    
+    <div class="background-blur"></div>
+        <div id="zoneDGauche">
+          <h1><strong>Le pile ou face</strong></h1>
+          <div id="zoneDArgent">
+            <h2 id="money">Argent : 50$</h2>
+          </div>
+          <article id="coin">
+            <div class="side heads">
+              <img src="piece.png" class="side heads"></img>
+            </div>
+            <div class="side tails">
+              <img src="piece.png" class="side tails"></img>
+            </div>
+          </article>
+        </div>
+        <div id="conteneurGambling">
+            <h1 id="resultat"></h1>
+            <h1 id="gambleRes"> </h1>
+            <div id="zoneDeParie">
+                <h3><strong>$ A vos paris $</strong></h3>
+                <h4 id = "mise"> Mise: 0$</h4>
+                <input id="gambleAmmount" type="text" value="0">
+                <button id="sendGamble">Parier</button>
+                <br>
+                <button id="gambleP">PILE</button>
+                <button id="gambleF">FACE</button>
+            </div>
+            <button id="lanceur">Lancer la pièce</button>
+            <br>
+            <button id="reset">Reset</button>
+        </div>
+  </body>
+</html>

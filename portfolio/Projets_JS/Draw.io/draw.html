@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Draw.io</title>
+    <script src="draw.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="../../assets/logo.png" />
+    <link rel="stylesheet" href="draw.css" />
+  </head>
+  <body>
+    <nav>
+      <article class="logo">
+        <img src="../../assets/logo.png" />
+        <a href="../../pages/aProposDeMoi.html">JUNGERS Enzo</a>
+      </article>
+      <article class="nav-links">
+        <a href="../../pages/index.html">Acceuil</a>
+        <a href="../../pages/CV.html">CV</a>
+        <a href="../../pages/Projets.html">Projets</a>
+        <a href="../../pages/Veille.html">Veille</a>
+        <a href="../../pages/Certification.html">Certifications</a>
+        <a href="../../pages/aProposDeMoi.html">A propos de moi</a>
+      </article>
+      <button><i class="ri-github-fill"></i> Mes Projets</button>
+    </nav>
+    <div class="toolbar">
+      <input type="color" aria-label="Sélectionner la couleur du crayon" />
+      <input
+        type="range"
+        min="2"
+        max="50"
+        value="30"
+        aria-label="Sélectionner la taille de la pointe du crayon"
+      /><span class="output">30</span>
+      <input type="button" value="Reset" />
+    </div>
+
+    <canvas class="myCanvas">
+      <p>
+        Votre navigateur ne semble pas prendre en charge cette fonctionnalité.
+      </p>
+    </canvas>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+#rendu .item {
+  width: 1200px;
+}
+
+#pdf .item {
+  width: 950px;
+}
+
+#pdf .inner {
+  width: 950px;
+  height: 1000px;
+}
+
+#pdf embed {
+  width: 900px;
+  height: 900px;
+}

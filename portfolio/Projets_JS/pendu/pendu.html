@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="../../assets/logo.png" />
+    <link rel="stylesheet" type="text/css" href="pendu.css" />
+    <script src="pendu.js"></script>
+  </head>
+  <body>
+    <nav>
+      <article class="logo">
+        <img src="../../assets/logo.png" />
+        <a href="../../pages/aProposDeMoi.html">JUNGERS Enzo</a>
+      </article>
+      <article class="nav-links">
+        <a href="../../pages/index.html">Acceuil</a>
+        <a href="../../pages/CV.html">CV</a>
+        <a href="../../pages/Projets.html">Projets</a>
+        <a href="../../pages/Veille.html">Veille</a>
+        <a href="../../pages/Certification.html">Certifications</a>
+        <a href="../../pages/aProposDeMoi.html">A propos de moi</a>
+      </article>
+      <button><i class="ri-github-fill"></i> Mes Projets</button>
+    </nav>
+
+    <div class="background-blur"></div>
+    <div id="zone1">
+      <h1><strong>Le pendu</strong></h1>
+      <button id="start" disabled>start</button>
+      <h2>Le mot: <span id="tiret"></span></h2>
+      <input id="letterEntree" type="text" value="" />
+      <button id="sendLetter" disabled>Comfirmer</button>
+      <button id="changerBtn" disabled>changer de mot (-2)</button>
+      <button id="reset">Reset</button>
+    </div>
+    <div id="pendu">
+      <h2 id="point">Score : 10 pts</h2>
+      <button id="showLettre" disabled>
+        Montrer les lettres déjà utilisé (-3pts)
+      </button>
+      <h2 id="titreLettre">Lettre Testé :</h2>
+      <h3 id="listLettre"></h3>
+    </div>
+    <div id="res"><strong>ii Tu as Perdu !!</strong></div>
+  </body>
+</html>

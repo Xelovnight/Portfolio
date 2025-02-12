@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <script src="../JavaScript/routes.js"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/bigitemPForScreen.css" />
+    <link rel="stylesheet" href="../css/experience.css" />
+    <link rel="icon" type="image/x-icon" href="../assets/logo.png" />
+    <title>Portfolio d'Enzo JUNGERS</title>
+  </head>
+
+  <body>
+    <nav>
+      <div class="logo">
+        <img src="../assets/logo.png" />
+        <a href="../pages/aProposDeMoi.html">JUNGERS Enzo</a>
+      </div>
+      <div class="nav-links">
+        <a href="../pages/index.html">Acceuil</a>
+        <a href="../pages/CV.html">CV</a>
+        <a href="../pages/Projets.html">Projets</a>
+        <a class="emplacement" href="../pages/experiences.html">Expériences</a>
+        <a href="../pages/Veille.html">Veille</a>
+        <a href="../pages/Certification.html">Certifications</a>
+        <a href="../pages/aProposDeMoi.html">A propos de moi</a>
+      </div>
+      <button class="git"><i class="ri-github-fill"></i> Mes Projets</button>
+    </nav>
+
+    <div class="hero">
+      <div class="left-section">
+        <div class="top">
+          <h2>Présentation de mon stage à la <strong>DIRISI</strong>.</h2>
+          <p>
+            La
+            <strong
+              >Direction Interarmées des Réseaux d'Infrastructure et des
+              Systèmes d'Information de la Défense (DIRISI)</strong
+            >
+            est une entité du ministère des Armées français. Elle est
+            responsable de la gestion, de l'exploitation et de la sécurité des
+            réseaux et des systèmes d'information de la défense, assurant la
+            communication et le traitement des données pour les forces armées.
+          </p>
+          <p>
+            <strong>Contexte:</strong> Pour ces 2 stages à la <strong>DIRISI</strong> j'était accompagné d'un autre stagiaire, Logan CHARRIER, d'où mon utilisation du pronom "Nous" durant les explications ci-dessous.
+          </p>
+
+          <div class="buttons">
+            <button class="DIRISI">
+              La DIRISI<i class="ri-arrow-right-line"></i>
+            </button>
+          </div>
+        </div>
+        <div class="bottom">
+          <p>Réseaux Sociaux :</p>
+          <div class="icons">
+            <a href="https://x.com/EnzoJunger34208" class="ri-twitter-x-line"></a>
+            <a
+              href="https://www.linkedin.com/in/enzo-jungers-6b0571312/"
+              class="ri-linkedin-box-line"
+            ></a>
+            <a href="https://www.instagram.com/enzo_jungers/?hl=fr" class="ri-instagram-line"></a>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/DIRISI.jpg" />
+    </div>
+
+    <div class="about"></div>
+
+    <div class="Projets">
+        <div class="inner">
+          <!-- <p class="debug">
+            <i class="ri-command-line"></i> Troubleshoot & Debug -->
+          </p>
+          <h2>Ma première Mission</h2>
+          <p class="info">
+            Voici ma première mission qui m'a été confié durant mon stage, <strong> E-Docaero</strong>. 
+          </p>
+  
+          <div class="items">
+            <div class="item">
+              <a href="#">La page de création des mentions legales.</a>
+              <p>Cette première mission, sous la surveillance de mon chef de projet, avait pour but de nous présenter le projet dans sa globalité, incluant donc son front et son back, j'ai pour cela dû apprendre à maîtriser le REACT.js. Je devais donc ajouter à un projet déjà existant les pages de mentions legales et ajouter un éditeur pour ces dernières.
+              </p>
+              <p>(Voir ci-dessous)</p>
+            </div>
+            <div class="item">
+              <a href="#">Le back.</a>
+              <p>
+                J'ai donc commencé par le back en ajoutant le CRUD (Create, Read, Update, Delete) qui est chargé de la création ,de la lecture ,de la modification et de la suppression des données, les routes pour faires les liens entres les différentes fichier et répertoire, les différents tests unitaires qui sont chargé de vérifier les valeurs retourné par les fonction pour voir si elle sont cohérentes et les Seeds qui remplace les vraies données, dans mon cas des lorem ipsum qui remplacent les vraies mentions legales.
+              </p>
+              <p>(Voir ci-dessous)</p>
+
+            </div>
+            <div class="item">
+              <a href="#">Le front.</a>
+              <p>
+                Une fois le back créé, je suis donc passé au front. C'est donc ici que j'ai commencé à manipuler du REACT.js. J'ai donc créé (en me basant sur les autres Projets existant) la page de création des mentions legales. Pour cela j'ai donc importé divers fonction comme celle de traduction, pour la traduction j'ai utilisé des fichiers JSON (un par langue) pour pouvoir changer la langue, et ajouter le tableau regroupant toutes les mentions legales ainsi que le bouton Submit. Etant donné que la création des mentions legales se fait à l'aide d'un formulaire, j'ai ajouté un shemas yup, ainsi que les yuperreurs qui s'occupe de vérifier les données entrées dans le formulaire (chiffre au lieu de lettre, champs obligatoire...).
+              </p>
+              <p>(Voir ci-dessous)</p>
+            </div>
+            <div class="item">
+              <a href="#">Derniers changements.</a>
+              <p>
+                L'ajout de mention legale necéssite donc l'ajout de la modification de ces dernières, ma dernière mission était donc de modifier mon code pour qu'il intègre cette fonctionnalité. Pour cela j'ai donc créé une "card", qui regroupe les données que je vais insérer dans le tableau ce qui me permettra de les récupérer dans ma page de modification, pour pouvoir, lorsque je clique sur l'id d'une mention, me donner la possibilité de la modifier ou de la supprimer.
+              </p>
+              <p>(Voir ci-dessous)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="about"></div>
+
+    <div class="about">
+      <p>Décortication et Explication.</p>
+      <h2>Voyons comment est composé cette mission.</h2>
+      <div class="items">
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/edocaero.png" />
+            <a href="../pages/experienceDIRISI/presentationEdocaero.html">E-Docaero <i class="fas fa-external-link-alt"></i
+              ></a>
+            <p>
+              Une courte présentation de ce qu'est réellement e-docaero.
+            </p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/MentionLegales-1.png" />
+            <a href="#">Création <i class="fas fa-external-link-alt"></i
+              ></a>
+            <p>
+              Le tableau des mentions legales avec les possibilitées d'exporter au format xml et de créer des mentions legales.
+            </p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/MentionsLegales-2.png" />
+            <a href="#"
+              >Modification / Suppression <i class="fas fa-external-link-alt"></i></a
+            >
+            <p>
+              Apparaît lorsque l'on appuie sur l'id d'un mention, permet la modification des informations ainsi que la suppression de la mention.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about"></div>
+
+    <div class="Projets">
+      <div class="inner">
+        <!-- <p class="debug">
+          <i class="ri-command-line"></i> Troubleshoot & Debug -->
+        </p>
+        <h2>Ma deuxième Mission</h2>
+        <p class="info">
+          Voici ma deuxième mission qui m'a été confié durant mon stage, <strong> Mirador</strong>.
+        </p>
+
+        <div class="items">
+          <div class="item">
+            <a href="#">Mise en place des idées.</a>
+            <p>
+              Le projet vise à créer un agrégateur pour superviser les SI distants grâce à une fonctionnalité d’observabilité des activités applicatives. Celle-ci permet une surveillance active des opérations, facilitant la détection d’anomalies et la mise en œuvre rapide de corrections. Les données collectées incluront des informations clés comme le nom du projet, le trigramme, la version, l’environnement, la classification des données, les mentions, le niveau de service, le sigle de la DSI et l’état des services, offrant une visibilité essentielle pour une supervision efficace.
+            </p>
+          </div>
+          <div class="item">
+            <a href="#">Les premiers plans.</a>
+            <p>
+              On a donc été amené à effectuer une librairie qui envairait donc les données à une application web qui les regrouperais toutes. Avec l'aide de notre chef de projet, nous avons effectuer les premier plan et tests qui assurerons le bon fonctionnement de l'application.
+            </p>
+            <p>(Voir ci-dessous)</p>
+
+          </div>
+          <div class="item">
+            <a href="#">La mise en place.</a>
+            <p>
+              Pour cela nous avons mis en place un CRUD, donc un model, un controleur, un routeur, un seeder et des tests unitaires. Pendant ce temps notre chef de projet commençait a faire le desin de l'application. 
+            </p>
+            <p>(Voir ci-dessous)</p>
+          </div>
+          <div class="item">
+            <a href="#">Pour la suite.</a>
+            <p>
+              Nous n'avons malheureusement pas put suivre la suite du projet car c'était déjà la fin de notre stage au CDAD, mais notre chef de projet à continué ce projet après et la finalisé sans nous.
+            </p>
+            <p>(Voir ci-dessous)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about">
+      <hr>
+      <p>Stage de deuxième année.</p>
+      <h2>Ci-dessous vous trouverez le contenu du stage de deuxième année de BTS SIO.</h2>
+    </div>
+
+    <div class="Projets">
+      <div class="inner">
+        <!-- <p class="debug">
+          <i class="ri-command-line"></i> Troubleshoot & Debug -->
+        </p>
+        <h2>Ma première Mission</h2>
+        <p class="info">
+          Voici ma première mission qui m'a été confié durant mon stage, <strong> OpenNoteBook Ai</strong>.
+        </p>
+
+        <div class="items">
+          <div class="item">
+            <a href="#">Recherche.</a>
+            <p>
+              Pour ce projet nous devions faire des recherches sur les ia plus particulièrement sur des ia similaires à notebooklm de chez google. Cette ia permettrait de faciliter la compréhension des document et la prise de note en analysant les sources fournit pour repondre aux requêtes de l'utilisateur.
+              En clair, notre travail été de chercher si des ia similaire a notebooklm existaient, mais il fallait que ces ia soit utilisable en local, hors ligne et soit gratuite ainsi que open source. A la fin de nos recherche, nous avons présenté ces dernières à nos chef de projet avec nous avons conclu que l'ia avec laquelle le projet serait le plus faisable serait OpenNoteBookAi. Par la suite ils nous ont permis de mettre en place le projet.
+            </p>
+            <p>(Voir ci-dessous)</p>
+          </div>
+          <div class="item">
+            <a href="#">Mise en place de l'environnement.</a>
+            <p>
+              Après l'acceptation du projet par nos chef de projet, Nous devions mettre en place les idées avancées par nos recherches. Pour cela nous avons choisi d'utiliser un conteneur Docker où nous avons importer les images nécéssaires aux bon fonctionnement d'opennotebook ai (surrealdb, Ollama et opennotebook).
+            </p>
+            <p>(Voir ci-dessous)</p>
+
+          </div>
+          <div class="item">
+            <a href="#">Progression et configuration du projet.</a>
+            <p>
+              Une fois les images trouvé et conteneurisé, il a fallut rajouter des models pour l'ia ollama. Ces models ont été importer depuis le site officiel de ollama, puis inséré dans le conteneur contenant l'image Ollama. Une fois les différents models installé (llama3.2 et mxbai-embed-large), nous avons donc configurer l'application pour qu'elle accepte ces mêmes models mais aussi qu'elle ne puissent pas se bloquer car d'autre sont absent, (ollama ne prend pas en charge les fichiers audio, certain models qui aurait dû s'en occupé sont donc absent).
+            </p>
+            <p>(Voir ci-dessous)</p>
+          </div>
+          <div class="item">
+            <a href="#">Tests.</a>
+            <p>
+              A la suite de l'importation des models, il fallait maintenant vérifier que l'application marche correctement. pPour cela nous avons donc effectuer divers tests. Nous avons vérifier la création de notebook, l'importation de sources(de tous les types), ajouter des notes et l'utilisation de l'ia.</p>
+            <p>(Voir ci-dessous)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about">
+      <p>Décortication et Explication.</p>
+      <h2>Voyons comment est composé cette mission.</h2>
+      <div class="items">
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/rechercheia.PNG" />
+            <a href="experienceDIRISI/rechercheia.html">Recherche</a>
+            <p>
+              Pour mettre au propre les recherches effectuées, nous avons donc fait un power de Présentation pour nos chefs de projet.
+            </p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/openotebookconteneur.png" />
+            <a href="../pages/experienceDIRISI/conteneurmodels.html"
+              >Conteneurs et models</a
+            >
+            <p>
+              Plus de précion pour les conteneurs et models utilisés.
+            </p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="inner">
+            <img src="../assets/opennotebookcover.png" />
+            <a href="../pages/experienceDIRISI/testopennotebook.html"
+              >Test et rendu final</a
+            >
+            <p>
+              Le rendu final de l'application et le résultat des tests effectués.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about">
+      <hr>
+      <p>Tableau de synthèse.</p>
+      <h2>Ci-dessous vous trouverez le tableau de synthèse qui résume les compétences vu durant mes différents projets.</h2>
+    </div>
+
+    <div id="pdf" class="about">
+      <div class="items">
+        <div class="item">
+          <div id="pdf" class="inner">
+            <embed src="../assets/tableausynthese.pdf">
+            <a href="#">Tableau de synthèse </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact">
+      <h2>Intéressé pour travailler ensemble ?</h2>
+      <div class="items">
+        <div class="item">
+          <a href="#">Planifier un rendez-vous</a>
+          <p>Discutons de futurs Projets et d'avenirs !</p>
+          <p>Tel : 06.10.39.36.11</p>
+          <p>email : enzo.jungers@gmail.com</p>
+        </div>
+        <div class="item">
+          <a href="#">Explorer mon travail</a>
+          <p>
+            Explorer mon Portfolio pour voir quel genre de travail je peux
+            fournir.
+          </p>
+          <button class="voirMonTravail">Voir mon travail</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <a href="#">&uArr;</a>
+      <p>© 2024 JUNGERS Enzo</p>
+      <p>Réseaux Sociaux :</p>
+      <div class="icons2">
+        <a href="https://x.com/EnzoJunger34208" class="ri-twitter-x-line"></a>
+        <a href="https://www.linkedin.com/in/enzo-jungers-6b0571312/" class="ri-linkedin-box-line"></a>
+        <a href="https://www.instagram.com/enzo_jungers/?hl=fr" class="ri-instagram-line"></a>
+      </div>
+      <a href="#">&uArr;</a>
+    </footer>
+  </body>
+</html>
