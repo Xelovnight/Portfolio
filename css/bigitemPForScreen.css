@@ -2,6 +2,16 @@
   width: 1200px;
 }
 
+#certif .item {
+  width: 1750px;
+  height: 550px;
+}
+
+#certif2 .item {
+  width: 1750px;
+  height: 450px;
+}
+
 #pdf .item {
   width: 950px;
 }
