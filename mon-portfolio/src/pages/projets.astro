@@ -23,7 +23,10 @@ const processedProjects = await Promise.all(
   <main class="max-w-6xl mx-auto p-8 pt-16">
     
     <header class="mb-16 text-center">
-      <h1 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-[var(--accent)] to-[var(--accent)]/70 bg-clip-text text-transparent">
+      <h1 
+        class="text-5xl font-extrabold mb-4 pb-2 bg-clip-text text-transparent tracking-tight leading-[1.15]"
+        style="background-image: linear-gradient(to right, var(--gradient-start), var(--accent));"
+      >
         {t('projects.title')}
       </h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
@@ -31,7 +34,8 @@ const processedProjects = await Promise.all(
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- 1. LA GRILLE DES CARTES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
       {processedProjects.map((project) => (
         <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-accent dark:hover:border-accent transition-all duration-300 group">
           <div>
@@ -40,7 +44,7 @@ const processedProjects = await Promise.all(
                 {project.data.tags[0]?.[0]}
               </div>
               <div>
-                <h3 class="text-2xl font-semibold">{project.data.title}</h3>
+                <h3 class="text-2xl font-semibold group-hover:text-accent transition-colors">{project.data.title}</h3>
                 <time class="text-sm text-gray-500 dark:text-gray-500 capitalize">
                   {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
                 </time>
@@ -59,53 +63,80 @@ const processedProjects = await Promise.all(
           <button class="w-full text-center bg-accent text-white font-semibold py-3 px-6 rounded-2xl hover:bg-accent/90 dark:hover:bg-accent/80 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
             {t('home.discover')}
           </button>
-
-          <dialog id={`modal-${project.id}`} class="backdrop:bg-black/60 dark:backdrop:bg-black/80 backdrop-blur-sm p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl transition-all duration-300">
-            <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
-              <div class="flex items-start justify-between mb-10 gap-6">
-                <div>
-                  <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
-                  <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">
-                    {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
-                  </p>
-                </div>
-                <button class="close-modal-btn text-gray-500 hover:text-red-500 dark:hover:text-red-400 bg-gray-100 dark:bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors" data-project-id={project.id}>
-                  <span class="text-2xl">&times;</span>
-                </button>
-              </div>
-              <article class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-bold prose-headings:mb-4 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed">
-                <project.Content />
-              </article>
-            </div>
-          </dialog>
         </article>
       ))}
     </div>
+
+    <!-- 2. LES MODALES (Séparées des cartes, en utilisant des divs avec z-index) -->
+    {processedProjects.map((project) => (
+      <div id={`modal-${project.id}`} class="fixed inset-0 z-[60] hidden items-center justify-center p-4 sm:p-6">
+        <!-- Backdrop flouté -->
+        <div class="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm close-modal-backdrop" data-project-id={project.id}></div>
+        
+        <!-- Contenu de la Modale animée -->
+        <div class="animated-modal relative z-[70] p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl transition-all duration-300">
+          <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
+            <div class="flex items-start justify-between mb-10 gap-6">
+              <div>
+                <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                  {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                </p>
+              </div>
+              <button class="close-modal-btn text-gray-500 hover:text-red-500 dark:hover:text-red-400 bg-gray-100 dark:bg-zinc-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors relative z-[80]" data-project-id={project.id}>
+                <span class="text-2xl">&times;</span>
+              </button>
+            </div>
+            <article class="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
+              <project.Content />
+            </article>
+          </div>
+        </div>
+      </div>
+    ))}
+
   </main>
 
+  <!-- Script des Modales en Div -->
   <script>
     const openButtons = document.querySelectorAll('.open-modal-btn');
     const closeButtons = document.querySelectorAll('.close-modal-btn');
+    const backdrops = document.querySelectorAll('.close-modal-backdrop');
 
+    // Ouvrir
     openButtons.forEach(button => {
       button.addEventListener('click', () => {
         const projectId = button.getAttribute('data-project-id');
-        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
-        if (modal) { modal.showModal(); document.body.style.overflow = 'hidden'; }
+        const modal = document.getElementById(`modal-${projectId}`);
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden'; // Empêche de scroller la page en fond
+        }
       });
     });
 
+    // Fonction de fermeture
+    const closeModal = (projectId) => {
+      const modal = document.getElementById(`modal-${projectId}`);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = ''; // Réactive le scroll
+      }
+    };
+
+    // Fermer via le bouton X
     closeButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const projectId = button.getAttribute('data-project-id');
-        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
-        if (modal) { modal.close(); document.body.style.overflow = ''; }
+        closeModal(button.getAttribute('data-project-id'));
       });
     });
 
-    document.querySelectorAll('dialog').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) { (modal as HTMLDialogElement).close(); document.body.style.overflow = ''; }
+    // Fermer en cliquant à côté de la modale (sur le fond flou)
+    backdrops.forEach(backdrop => {
+      backdrop.addEventListener('click', () => {
+        closeModal(backdrop.getAttribute('data-project-id'));
       });
     });
   </script>

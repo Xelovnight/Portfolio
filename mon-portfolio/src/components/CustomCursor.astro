@@ -5,7 +5,7 @@
 <div 
   id="custom-cursor" 
   style="border-color: var(--accent); background-color: color-mix(in srgb, var(--accent) 20%, transparent); transform: translate(-50%, -50%) scale(1);"
-  class="fixed pointer-events-none z-50 w-8 h-8 rounded-full border-[1.5px] backdrop-blur-[1px] transition-transform duration-200 ease-out hidden md:block"
+  class="fixed pointer-events-none z-[9999] w-8 h-8 rounded-full border-[1.5px] backdrop-blur-[1px] transition-transform duration-200 ease-out hidden md:block"
 ></div>
 
 <script>
@@ -30,7 +30,7 @@
   // Fonction pour créer un pixel évaporé
   function spawnPixel(x: number, y: number) {
     const pixel = document.createElement('div');
-    pixel.className = 'fixed pointer-events-none z-40 rounded-[2px] hidden md:block';
+    pixel.className = 'fixed pointer-events-none z-[9998] rounded-[2px] hidden md:block';
     
     const size = Math.random() * 3 + 4; // Taille entre 4px et 7px
     pixel.style.width = `${size}px`;

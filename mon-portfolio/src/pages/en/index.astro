@@ -63,9 +63,12 @@ const processedCerts = await Promise.all(
     
     <header class="mb-20 text-center">
       <!-- Un dégradé plus "Rocket" (Bleu vers Violet) et plus saturé -->
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-br from-white to-zinc-400 dark:from-white dark:to-zinc-500 bg-clip-text text-transparent tracking-tight">
+      <h1 
+        class="text-5xl md:text-6xl font-extrabold mb-6 pb-2 bg-clip-text text-transparent tracking-tight leading-[1.15]"
+        style="background-image: linear-gradient(to bottom right, var(--gradient-start), var(--accent));"
+      >
         {t('home.title')}
-      </h1>
+      </h1> 
       <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
         {t('home.subtitle')}
       </p>
@@ -80,59 +83,68 @@ const processedCerts = await Promise.all(
         {t('home.latestProjects')}
       </h2>
       
+      <!-- 1. LA GRILLE DES CARTES -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {processedProjects.map((project) => (
-          <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-accent dark:hover:border-accent transition-all duration-300 group">
+          <article class="border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-7 shadow-sm bg-zinc-50/50 dark:bg-zinc-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-accent transition-all duration-300 group">
             <div>
               <div class="flex items-center gap-3 mb-5">
                 <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center font-bold text-accent">
                   {project.data.tags[0]?.[0]}
                 </div>
                 <div>
-                  <h3 class="text-2xl font-semibold">{project.data.title}</h3>
-                  <time class="text-sm text-gray-500 dark:text-gray-500 capitalize">
+                  <h3 class="text-2xl font-semibold group-hover:text-accent transition-colors">{project.data.title}</h3>
+                  <time class="text-sm text-zinc-500 capitalize">
                     {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
                   </time>
                 </div>
               </div>
-              <p class="text-gray-700 dark:text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+              <p class="text-zinc-600 dark:text-zinc-300 mb-6 line-clamp-3 leading-relaxed">
                 {project.data.description}
               </p>
               <div class="flex flex-wrap gap-2.5 mb-8">
                 {project.data.tags.map((tag: string) => (
-                  <span class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200/50 dark:border-gray-700/50">
+                  <span class="bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-semibold px-3 py-1 rounded-full border border-zinc-200/50 dark:border-zinc-700/50">
                     {tag}
                   </span>
                 ))}
               </div>
             </div>
             
-            <button class="w-full text-center bg-accent text-white font-semibold py-3 px-6 rounded-2xl hover:bg-accent/90 dark:hover:bg-accent/80 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
+            <button class="w-full text-center bg-accent text-white font-semibold py-3 px-6 rounded-2xl hover:opacity-90 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
               {t('home.discover')}
             </button>
-
-            <!-- Modale du projet -->
-            <dialog id={`modal-${project.id}`} class="backdrop:bg-black/60 dark:backdrop:bg-black/80 backdrop-blur-sm p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl transition-all duration-300">
-              <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
-                <div class="flex items-start justify-between mb-10 gap-6">
-                  <div>
-                    <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">
-                      {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
-                    </p>
-                  </div>
-                  <button class="close-modal-btn text-gray-500 hover:text-red-500 dark:hover:text-red-400 bg-gray-100 dark:bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors" data-project-id={project.id}>
-                    <span class="text-2xl">&times;</span>
-                  </button>
-                </div>
-                <article class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-bold prose-headings:mb-4 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed">
-                  <project.Content />
-                </article>
-              </div>
-            </dialog>
           </article>
         ))}
       </div>
+
+      <!-- 2. LES MODALES (Séparées et libres de prendre tout l'écran) -->
+      {processedProjects.map((project) => (
+        <div id={`modal-${project.id}`} class="fixed inset-0 z-[60] hidden items-center justify-center p-4 sm:p-6">
+          <!-- Backdrop flouté -->
+          <div class="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm close-modal-backdrop" data-project-id={project.id}></div>
+          
+          <!-- Contenu de la Modale -->
+          <div class="animated-modal relative z-[70] p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl transition-all duration-300">
+            <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
+              <div class="flex items-start justify-between mb-10 gap-6">
+                <div>
+                  <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
+                  <p class="text-sm text-zinc-500 capitalize">
+                    {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+                <button class="close-modal-btn text-zinc-500 hover:text-red-500 bg-zinc-100 dark:bg-zinc-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors relative z-[80]" data-project-id={project.id}>
+                  <span class="text-2xl">&times;</span>
+                </button>
+              </div>
+              <article class="prose prose-lg dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                <project.Content />
+              </article>
+            </div>
+          </div>
+        </div>
+      ))}
     </section>
 
     <!-- NOUVELLE SECTION : DERNIÈRES EXPÉRIENCES -->
@@ -246,30 +258,46 @@ const processedCerts = await Promise.all(
     </section>
   </main>
 
-  <!-- Ton script JavaScript (Ne change pas) -->
+<!-- Nouveau Script des Modales -->
   <script>
     const openButtons = document.querySelectorAll('.open-modal-btn');
     const closeButtons = document.querySelectorAll('.close-modal-btn');
+    const backdrops = document.querySelectorAll('.close-modal-backdrop');
 
+    // Ouvrir
     openButtons.forEach(button => {
       button.addEventListener('click', () => {
         const projectId = button.getAttribute('data-project-id');
-        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
-        if (modal) { modal.showModal(); document.body.style.overflow = 'hidden'; }
+        const modal = document.getElementById(`modal-${projectId}`);
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden'; // Empêche de scroller la page en fond
+        }
       });
     });
 
+    // Fonction de fermeture
+    const closeModal = (projectId) => {
+      const modal = document.getElementById(`modal-${projectId}`);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = ''; // Réactive le scroll
+      }
+    };
+
+    // Fermer via le bouton X
     closeButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const projectId = button.getAttribute('data-project-id');
-        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
-        if (modal) { modal.close(); document.body.style.overflow = ''; }
+        closeModal(button.getAttribute('data-project-id'));
       });
     });
 
-    document.querySelectorAll('dialog').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) { (modal as HTMLDialogElement).close(); document.body.style.overflow = ''; }
+    // Fermer en cliquant à côté de la modale (sur le fond flou)
+    backdrops.forEach(backdrop => {
+      backdrop.addEventListener('click', () => {
+        closeModal(backdrop.getAttribute('data-project-id'));
       });
     });
   </script>

@@ -17,11 +17,6 @@
   animation: scroll 30s linear infinite;
 }
 
-/* Met l'animation en pause quand on passe la souris dessus */
-.animate-scroll:hover {
-  animation-play-state: paused;
-}
-
 /* Effet de fondu sur les bords gauche et droite */
 .mask-edges {
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
@@ -97,4 +92,34 @@ html[data-accent="magenta"] { --accent: #ec4899; --accent-glow: rgba(236, 72, 15
 ::-moz-selection {
   background-color: color-mix(in srgb, var(--accent) 35%, transparent);
   color: inherit;
+}
+
+/* --- COULEUR DE DÉPART DES TITRES (Clair / Sombre) --- */
+:root {
+  --gradient-start: #fdfdff; /* Noir/Zinc foncé en mode clair */
+}
+
+.dark, html.dark {
+  --gradient-start: #ffffff; /* Blanc en mode sombre */
+}
+
+/* --- ANIMATION BORDURE MODALE (PULSE DYNAMIQUE) --- */
+@keyframes modalBorderPulse {
+  0% {
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  50% {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  100% {
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+}
+
+.animated-modal {
+  border: 2px solid var(--accent);
+  animation: modalBorderPulse 3s infinite ease-in-out;
 }
