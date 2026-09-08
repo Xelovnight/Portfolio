@@ -1,0 +1,24 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+
+// On récupère l'URL complète de la page actuelle
+const { pathname } = Astro.url;
+const lang = getLangFromUrl(Astro.url);
+
+let targetPath = '/';
+
+if (lang === 'fr') {
+  targetPath = pathname === '/' ? '/en/' : `/en${pathname}`;
+} else {
+  targetPath = pathname.replace(/^\/en/, '') || '/';
+}
+
+const buttonText = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+---
+
+<a 
+  href={targetPath} 
+  class="fixed top-6 right-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-700 font-medium text-sm hover:scale-105 transition-transform z-50"
+>
+  {buttonText}
+</a>

@@ -1,0 +1,73 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={`${t('about.title')} | Portfolio`}>
+  <main class="max-w-5xl mx-auto p-8 pt-16">
+    
+    <header class="mb-16 text-center">
+      <h1 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-sky-400 bg-clip-text text-transparent">
+        {t('about.title')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+        {t('about.subtitle')}
+      </p>
+    </header>
+
+    <div class="flex flex-col lg:flex-row gap-12 items-start">
+      
+      <!-- Colonne de gauche : Photo & Boutons d'action -->
+      <div class="w-full lg:w-1/3 flex flex-col items-center">
+        <!-- Emplacement pour ta photo (à placer dans le dossier public) -->
+        <div class="w-64 h-64 rounded-3xl overflow-hidden bg-gray-200 dark:bg-gray-800 mb-8 border-4 border-white dark:border-gray-900 shadow-xl">
+          <img 
+            src="/profil.jpg" 
+            alt="Enzo Jungers" 
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.parentElement.classList.add('flex', 'items-center', 'justify-center', 'text-gray-400'); this.parentElement.innerHTML='<span class=\\'text-sm\\'>Photo de profil</span>';"
+          />
+        </div>
+
+        <div class="flex flex-col gap-4 w-full px-8 lg:px-0">
+          <a href="/cv-enzo-jungers.pdf" target="_blank" class="w-full text-center bg-blue-600 dark:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-sm">
+            📄 {t('about.downloadCV')}
+          </a>
+          <a href="/contact" class="w-full text-center bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold py-3 px-6 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition shadow-sm">
+            ✉️ {t('about.contactMe')}
+          </a>
+        </div>
+      </div>
+
+      <!-- Colonne de droite : Biographie (Le texte) -->
+      <div class="w-full lg:w-2/3 prose prose-lg dark:prose-invert prose-blue max-w-none prose-p:text-gray-700 dark:prose-p:text-gray-300">
+        
+        <h2>Mon Parcours</h2>
+        <p>
+          Passionné par l'informatique et la création de solutions logicielles, je suis actuellement étudiant à l'<strong>Université Côte d'Azur</strong>. Mon parcours a débuté par un Bac Pro CIEL, suivi d'un <strong>BTS SIO (spécialité SLAM)</strong> au Lycée Bonaparte à Toulon, avant de poursuivre en Licence 3 MIAGE.
+        </p>
+        <p>
+          Cette progression m'a permis de développer une double compétence : une solide base technique en développement informatique couplée à une vision claire des enjeux métiers et de la gestion d'entreprise.
+        </p>
+
+        <h2>Mes Objectifs pour 2026</h2>
+        <p>
+          Pour la prochaine rentrée académique, j'ambitionne d'intégrer un <strong>Master MIAGE (options MBDS ou IA2)</strong>. Dans ce cadre, je suis activement à la recherche d'une <strong>alternance</strong> dans les domaines de l'ingénierie logicielle, de l'intégration de systèmes ou de l'analyse de données (Power BI, IA).
+        </p>
+
+        <h2>En dehors du code</h2>
+        <p>
+          Le développement est pour moi plus qu'un cursus, c'est un domaine d'exploration permanent. Sur mon temps libre, je m'intéresse de près au game development et à la création d'assets. Je pratique régulièrement la <strong>modélisation 3D low-poly</strong> sur des outils comme Blender ou Blockbench.
+        </p>
+        <p>
+          Je suis également un grand amateur de jeux vidéo, que ce soit pour optimiser des bases et survivre en coopération sur <em>Ark: Survival Evolved</em>, explorer des modpacks complexes sur <em>Minecraft</em>, ou simplement faire la course sur <em>Forza Horizon</em>.
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+</BaseLayout>

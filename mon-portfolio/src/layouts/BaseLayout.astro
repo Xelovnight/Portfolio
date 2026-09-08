@@ -1,0 +1,56 @@
+---
+// src/layouts/BaseLayout.astro
+import Navbar from '../components/Navbar.astro';
+import LangSwitch from '../components/LangSwitch.astro';
+import { getLangFromUrl } from '../i18n/utils';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+
+// On permet au Layout d'accepter un titre dynamique pour l'onglet du navigateur
+const { title } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<html lang={lang}>
+  <head>
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <!-- Ajoute ceci juste avant </head> -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+      const accent = localStorage.getItem('accent') || 'blue';
+      document.documentElement.setAttribute('data-accent', accent);
+    </script>
+  </head>
+  <!-- On utilise zinc-950 (presque noir), antialiased pour lisser la police, et on stylise la sélection de texte -->
+  <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-200 transition-colors duration-300 antialiased selection:bg-blue-500/30 flex flex-col min-h-screen">    
+  
+    <Navbar />
+    
+    <LangSwitch />
+
+    <!-- C'est ICI que le contenu de tes pages (index, projets, etc.) sera injecté -->
+     
+    <div class="flex-grow">
+      <slot />
+    </div>
+
+    <Footer />
+  </body>
+</html>

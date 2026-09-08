@@ -1,0 +1,277 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TechCarousel from '../components/TechCarousel.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 1. GESTION DES PROJETS
+const allProjects = await getCollection('projets');
+const frProjects = allProjects.filter(project => project.id.startsWith('fr/') || project.id.startsWith('fr\\'));
+const sortedProjects = frProjects.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+const latestProjects = sortedProjects.slice(0, 3);
+
+const processedProjects = await Promise.all(
+  latestProjects.map(async (project) => {
+    const { Content } = await render(project);
+    return { ...project, Content };
+  })
+);
+
+// 2. NOUVEAU : GESTION DES EXPÉRIENCES
+const allExperiences = await getCollection('experiences');
+const frExperiences = allExperiences.filter(exp => exp.id.startsWith('fr/') || exp.id.startsWith('fr\\'));
+// Tri de la plus récente à la plus ancienne
+const sortedExperiences = frExperiences.sort((a, b) => new Date(b.data.startDate).valueOf() - new Date(a.data.startDate).valueOf());
+// On ne garde que les 3 dernières !
+const latestExperiences = sortedExperiences.slice(0, 3);
+
+const processedExperiences = await Promise.all(
+  latestExperiences.map(async (exp) => {
+    const { Content } = await render(exp);
+    return { ...exp, Content };
+  })
+);
+
+// Fonction pour formater les dates proprement
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString(lang, { month: 'long', year: 'numeric' });
+};
+
+// 3. GESTION DES CERTIFICATIONS
+const allCerts = await getCollection('certifications');
+const enCerts = allCerts.filter(cert => cert.id.startsWith('en/') || cert.id.startsWith('en\\'));
+// Tri de la plus récente à la plus ancienne
+const sortedCerts = enCerts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+// On ne garde que les 3 dernières
+const latestCerts = sortedCerts.slice(0, 3);
+
+const processedCerts = await Promise.all(
+  latestCerts.map(async (cert) => {
+    const { Content } = await render(cert);
+    return { ...cert, Content };
+  })
+);
+
+---
+
+<BaseLayout title={`${t('home.title')} | Portfolio`}>
+  
+  <main class="max-w-6xl mx-auto p-8 pt-16">
+    
+    <header class="mb-20 text-center">
+      <!-- Un dégradé plus "Rocket" (Bleu vers Violet) et plus saturé -->
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-br from-white to-zinc-400 dark:from-white dark:to-zinc-500 bg-clip-text text-transparent tracking-tight">
+        {t('home.title')}
+      </h1>
+      <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        {t('home.subtitle')}
+      </p>
+    </header>
+
+  <TechCarousel />
+
+    <!-- SECTION : DERNIERS PROJETS -->
+    <section class="mb-24">
+      <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+        {t('home.latestProjects')}
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {processedProjects.map((project) => (
+          <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 group">
+            <div>
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-bold text-blue-700 dark:text-blue-300">
+                  {project.data.tags[0]?.[0]}
+                </div>
+                <div>
+                  <h3 class="text-2xl font-semibold">{project.data.title}</h3>
+                  <time class="text-sm text-gray-500 dark:text-gray-500 capitalize">
+                    {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                  </time>
+                </div>
+              </div>
+              <p class="text-gray-700 dark:text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+                {project.data.description}
+              </p>
+              <div class="flex flex-wrap gap-2.5 mb-8">
+                {project.data.tags.map((tag: string) => (
+                  <span class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200/50 dark:border-gray-700/50">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            <button class="w-full text-center bg-blue-600 dark:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
+              {t('home.discover')}
+            </button>
+
+            <!-- Modale du projet -->
+            <dialog id={`modal-${project.id}`} class="backdrop:bg-black/60 dark:backdrop:bg-black/80 backdrop-blur-sm p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl transition-all duration-300">
+              <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
+                <div class="flex items-start justify-between mb-10 gap-6">
+                  <div>
+                    <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                      {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
+                  <button class="close-modal-btn text-gray-500 hover:text-red-500 dark:hover:text-red-400 bg-gray-100 dark:bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors" data-project-id={project.id}>
+                    <span class="text-2xl">&times;</span>
+                  </button>
+                </div>
+                <article class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-bold prose-headings:mb-4 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed">
+                  <project.Content />
+                </article>
+              </div>
+            </dialog>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- NOUVELLE SECTION : DERNIÈRES EXPÉRIENCES -->
+    <section>
+      <div class="flex justify-between items-end mb-10 border-b-2 pb-3 border-gray-100 dark:border-gray-800">
+        <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          {t('home.latestExperiences')}
+        </h2>
+        <!-- Lien vers la page complète des expériences -->
+        <a href="/experiences" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold hidden md:inline-block">
+          <Fragment set:html={t('home.allExperiences')} />
+        </a>
+      </div>
+      
+      <div class="relative border-l border-gray-200 dark:border-gray-800 ml-4 md:ml-0 max-w-4xl">
+        {processedExperiences.map((exp) => (
+          <div class="mb-10 ml-10 relative">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-[52px] ring-8 ring-white dark:ring-gray-950 dark:bg-blue-900">
+              <div class="w-2.5 h-2.5 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+            </span>
+            
+            <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors hover:border-blue-200 dark:hover:border-blue-800">
+              <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{exp.data.role}</h3>
+                <div class="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full w-fit mt-2 md:mt-0 capitalize">
+                  {formatDate(exp.data.startDate)} - {exp.data.endDate ? formatDate(exp.data.endDate) : t('experiences.present')}
+                </div>
+              </div>
+              <h4 class="text-md font-medium text-gray-600 dark:text-gray-400 mb-3">{exp.data.company}</h4>
+              
+              <div class="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">
+                <exp.Content />
+              </div>
+              
+              <div class="flex flex-wrap gap-2">
+                {exp.data.skills.slice(0, 4).map((skill: string) => (
+                  <span class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-semibold px-2.5 py-0.5 rounded-md border border-gray-200 dark:border-gray-700">
+                    {skill}
+                  </span>
+                ))}
+                {exp.data.skills.length > 4 && (
+                  <span class="text-xs text-gray-500 py-0.5 px-1">+{exp.data.skills.length - 4}</span>
+                )}
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+
+      <!-- Lien visible sur mobile -->
+      <div class="mt-6 text-center md:hidden">
+        <a href="/experiences" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
+          <Fragment set:html={t('home.allExperiences')} />
+        </a>
+      </div>
+    </section>
+
+    <!-- NOUVELLE SECTION : DERNIÈRES CERTIFICATIONS -->
+    <section class="mt-24">
+      <div class="flex justify-between items-end mb-10 border-b-2 pb-3 border-gray-100 dark:border-gray-800">
+        <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          {t('home.latestCertifications')}
+        </h2>
+        <!-- Lien vers la page complète -->
+        <a href="/certifications" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold hidden md:inline-block">
+          <Fragment set:html={t('home.allCertifications')} />
+        </a>
+      </div>
+
+      <!-- Grille de 3 colonnes -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {processedCerts.map((cert) => (
+          <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{cert.data.title}</h3>
+                  <p class="text-blue-600 dark:text-blue-400 text-sm font-medium">{cert.data.issuer}</p>
+                </div>
+                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-lg shrink-0">
+                  🏆
+                </div>
+              </div>
+
+              <time class="text-xs text-gray-500 dark:text-gray-400 block mb-4 capitalize">
+                {t('home.madeIn').replace('Projet réalisé en', 'Obtenue en').replace('Project made in', 'Earned in')} {cert.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+              </time>
+              
+              <div class="prose prose-sm dark:prose-invert text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                <cert.Content />
+              </div>
+            </div>
+
+            {cert.data.link && (
+              <a href={cert.data.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+                {t('certifications.verify')} <span class="ml-1">&nearr;</span>
+              </a>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <!-- Lien visible uniquement sur mobile -->
+      <div class="mt-6 text-center md:hidden">
+        <a href="/certifications" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
+          <Fragment set:html={t('home.allCertifications')} />
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Ton script JavaScript (Ne change pas) -->
+  <script>
+    const openButtons = document.querySelectorAll('.open-modal-btn');
+    const closeButtons = document.querySelectorAll('.close-modal-btn');
+
+    openButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const projectId = button.getAttribute('data-project-id');
+        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
+        if (modal) { modal.showModal(); document.body.style.overflow = 'hidden'; }
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const projectId = button.getAttribute('data-project-id');
+        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
+        if (modal) { modal.close(); document.body.style.overflow = ''; }
+      });
+    });
+
+    document.querySelectorAll('dialog').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) { (modal as HTMLDialogElement).close(); document.body.style.overflow = ''; }
+      });
+    });
+  </script>
+
+</BaseLayout>

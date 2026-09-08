@@ -1,0 +1,112 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const allProjects = await getCollection('projets');
+const enProjects = allProjects.filter(project => project.id.startsWith('en/') || project.id.startsWith('en\\'));
+// On trie tous les projets, SANS utiliser .slice()
+const sortedProjects = enProjects.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+const processedProjects = await Promise.all(
+  sortedProjects.map(async (project) => {
+    const { Content } = await render(project);
+    return { ...project, Content };
+  })
+);
+---
+
+<BaseLayout title={`${t('projects.title')} | Portfolio`}>
+  <main class="max-w-6xl mx-auto p-8 pt-16">
+    
+    <header class="mb-16 text-center">
+      <h1 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-sky-400 bg-clip-text text-transparent">
+        {t('projects.title')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+        {t('projects.subtitle')}
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {processedProjects.map((project) => (
+        <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 group">
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-bold text-blue-700 dark:text-blue-300">
+                {project.data.tags[0]?.[0]}
+              </div>
+              <div>
+                <h3 class="text-2xl font-semibold">{project.data.title}</h3>
+                <time class="text-sm text-gray-500 dark:text-gray-500 capitalize">
+                  {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                </time>
+              </div>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+              {project.data.description}
+            </p>
+            <div class="flex flex-wrap gap-2.5 mb-8">
+              {project.data.tags.map((tag: string) => (
+                <span class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200/50 dark:border-gray-700/50">{tag}</span>
+              ))}
+            </div>
+          </div>
+          
+          <button class="w-full text-center bg-blue-600 dark:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
+            {t('home.discover')}
+          </button>
+
+          <dialog id={`modal-${project.id}`} class="backdrop:bg-black/60 dark:backdrop:bg-black/80 backdrop-blur-sm p-0 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl transition-all duration-300">
+            <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
+              <div class="flex items-start justify-between mb-10 gap-6">
+                <div>
+                  <h2 class="text-4xl font-bold mb-3">{project.data.title}</h2>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                    {t('home.madeIn')} {project.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+                <button class="close-modal-btn text-gray-500 hover:text-red-500 dark:hover:text-red-400 bg-gray-100 dark:bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center transition-colors" data-project-id={project.id}>
+                  <span class="text-2xl">&times;</span>
+                </button>
+              </div>
+              <article class="prose prose-lg dark:prose-invert prose-blue max-w-none prose-headings:font-bold prose-headings:mb-4 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed">
+                <project.Content />
+              </article>
+            </div>
+          </dialog>
+        </article>
+      ))}
+    </div>
+  </main>
+
+  <script>
+    const openButtons = document.querySelectorAll('.open-modal-btn');
+    const closeButtons = document.querySelectorAll('.close-modal-btn');
+
+    openButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const projectId = button.getAttribute('data-project-id');
+        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
+        if (modal) { modal.showModal(); document.body.style.overflow = 'hidden'; }
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const projectId = button.getAttribute('data-project-id');
+        const modal = document.getElementById(`modal-${projectId}`) as HTMLDialogElement;
+        if (modal) { modal.close(); document.body.style.overflow = ''; }
+      });
+    });
+
+    document.querySelectorAll('dialog').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) { (modal as HTMLDialogElement).close(); document.body.style.overflow = ''; }
+      });
+    });
+  </script>
+</BaseLayout>

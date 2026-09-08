@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
+
+// Fonction pour gérer les liens selon la langue active
+const getPath = (path: string) => {
+  return lang === 'fr' ? path : `/en${path}`;
+};
+---
+
+<footer class="w-full border-t border-zinc-200/50 dark:border-zinc-800/50 py-8 mt-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md">
+  <div class="max-w-6xl mx-auto px-6 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+    
+    <!-- Copyright & Logo -->
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter">EJ.</span>
+      <span>&copy; {currentYear} Enzo Jungers. {t('footer.rights')}</span>
+    </div>
+
+    <!-- Liens utiles -->
+    <div class="flex items-center gap-6 font-medium">
+      <a href="https://github.com/ton-pseudo" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-white transition-colors">GitHub</a>
+      <a href="https://linkedin.com/in/ton-profil" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-white transition-colors">LinkedIn</a>
+      <a href={getPath('/contact')} class="hover:text-zinc-900 dark:hover:text-white transition-colors">
+        {lang === 'fr' ? 'Contact' : 'Contact'}
+      </a>
+    </div>
+
+  </div>
+</footer>
