@@ -33,10 +33,10 @@ const processedProjects = await Promise.all(
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {processedProjects.map((project) => (
-        <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 group">
+        <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-accent dark:hover:border-accent transition-all duration-300 group">
           <div>
             <div class="flex items-center gap-3 mb-5">
-              <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-bold text-blue-700 dark:text-blue-300">
+              <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center font-bold text-accent">
                 {project.data.tags[0]?.[0]}
               </div>
               <div>
@@ -56,7 +56,7 @@ const processedProjects = await Promise.all(
             </div>
           </div>
           
-          <button class="w-full text-center bg-blue-600 dark:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
+          <button class="w-full text-center bg-accent text-white font-semibold py-3 px-6 rounded-2xl hover:bg-accent/90 dark:hover:bg-accent/80 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
             {t('home.discover')}
           </button>
 

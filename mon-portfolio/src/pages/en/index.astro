@@ -76,16 +76,16 @@ const processedCerts = await Promise.all(
     <!-- SECTION : DERNIERS PROJETS -->
     <section class="mb-24">
       <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+        <span class="w-2 h-2 rounded-full bg-accent"></span>
         {t('home.latestProjects')}
       </h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {processedProjects.map((project) => (
-          <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 group">
+          <article class="border border-gray-100 dark:border-gray-900 rounded-3xl p-7 shadow-sm bg-gray-50/50 dark:bg-gray-900/30 backdrop-blur-sm flex flex-col justify-between hover:border-accent dark:hover:border-accent transition-all duration-300 group">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-bold text-blue-700 dark:text-blue-300">
+                <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center font-bold text-accent">
                   {project.data.tags[0]?.[0]}
                 </div>
                 <div>
@@ -107,7 +107,7 @@ const processedCerts = await Promise.all(
               </div>
             </div>
             
-            <button class="w-full text-center bg-blue-600 dark:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
+            <button class="w-full text-center bg-accent text-white font-semibold py-3 px-6 rounded-2xl hover:bg-accent/90 dark:hover:bg-accent/80 transition duration-200 shadow-sm open-modal-btn" data-project-id={project.id}>
               {t('home.discover')}
             </button>
 
@@ -139,11 +139,11 @@ const processedCerts = await Promise.all(
     <section>
       <div class="flex justify-between items-end mb-10 border-b-2 pb-3 border-gray-100 dark:border-gray-800">
         <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+        <span class="w-2 h-2 rounded-full bg-accent"></span>
         {t('home.latestExperiences')}
       </h2>
         <!-- Lien vers la page complète des expériences -->
-        <a href="/en/experiences" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold hidden md:inline-block">
+        <a href="/en/experiences" class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
           <Fragment set:html={t('home.allExperiences')} />
         </a>
       </div>
@@ -151,14 +151,14 @@ const processedCerts = await Promise.all(
       <div class="relative border-l border-gray-200 dark:border-gray-800 ml-4 md:ml-0 max-w-4xl">
         {processedExperiences.map((exp) => (
           <div class="mb-10 ml-10 relative">
-            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-[52px] ring-8 ring-white dark:ring-gray-950 dark:bg-blue-900">
-              <div class="w-2.5 h-2.5 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-accent/10 rounded-full -left-[52px] ring-8 ring-white dark:ring-gray-950">
+              <div class="w-2.5 h-2.5 bg-accent rounded-full"></div>
             </span>
             
-            <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors hover:border-blue-200 dark:hover:border-blue-800">
+            <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors hover:border-accent dark:hover:border-accent">
               <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">{exp.data.role}</h3>
-                <div class="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full w-fit mt-2 md:mt-0 capitalize">
+                <div class="text-xs font-medium text-accent bg-accent/10 px-3 py-1 rounded-full w-fit mt-2 md:mt-0 capitalize">
                   {formatDate(exp.data.startDate)} - {exp.data.endDate ? formatDate(exp.data.endDate) : t('experiences.present')}
                 </div>
               </div>
@@ -185,7 +185,7 @@ const processedCerts = await Promise.all(
 
       <!-- Lien visible sur mobile -->
       <div class="mt-6 text-center md:hidden">
-        <a href="/en/experiences" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
+        <a href="/en/experiences" class="text-accent hover:underline text-sm font-semibold">
           <Fragment set:html={t('home.allExperiences')} />
         </a>
       </div>
@@ -195,11 +195,11 @@ const processedCerts = await Promise.all(
     <section class="mt-24">
       <div class="flex justify-between items-end mb-10 border-b-2 pb-3 border-gray-100 dark:border-gray-800">
         <h2 class="text-2xl font-bold mb-8 text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
-          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          <span class="w-2 h-2 rounded-full bg-accent"></span>
           {t('home.latestCertifications')}
         </h2>
         <!-- Lien vers la page complète -->
-        <a href="/certifications" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold hidden md:inline-block">
+        <a href="/certifications" class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
           <Fragment set:html={t('home.allCertifications')} />
         </a>
       </div>
@@ -207,14 +207,14 @@ const processedCerts = await Promise.all(
       <!-- Grille de 3 colonnes -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {processedCerts.map((cert) => (
-          <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
+          <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between hover:border-accent dark:hover:border-accent transition-colors">
             <div>
               <div class="flex items-start justify-between mb-4">
                 <div>
                   <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{cert.data.title}</h3>
-                  <p class="text-blue-600 dark:text-blue-400 text-sm font-medium">{cert.data.issuer}</p>
+                  <p class="text-accent text-sm font-medium">{cert.data.issuer}</p>
                 </div>
-                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-lg shrink-0">
+                <div class="w-10 h-10 bg-accent/10 text-accent rounded-full flex items-center justify-center text-lg shrink-0">
                   🏆
                 </div>
               </div>
@@ -229,7 +229,7 @@ const processedCerts = await Promise.all(
             </div>
 
             {cert.data.link && (
-              <a href={cert.data.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+              <a href={cert.data.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-accent transition-colors mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
                 {t('certifications.verify')} <span class="ml-1">&nearr;</span>
               </a>
             )}
@@ -239,7 +239,7 @@ const processedCerts = await Promise.all(
 
       <!-- Lien visible uniquement sur mobile -->
       <div class="mt-6 text-center md:hidden">
-        <a href="/certifications" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
+        <a href="/certifications" class="text-accent hover:underline text-sm font-semibold">
           <Fragment set:html={t('home.allCertifications')} />
         </a>
       </div>

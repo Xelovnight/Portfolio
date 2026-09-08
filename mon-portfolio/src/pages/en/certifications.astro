@@ -38,9 +38,9 @@ const processedCerts = await Promise.all(
             <div class="flex items-start justify-between mb-4">
               <div>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{cert.data.title}</h2>
-                <p class="text-blue-600 dark:text-blue-400 font-medium">{cert.data.issuer}</p>
+                <p class="text-accent font-medium">{cert.data.issuer}</p>
               </div>
-              <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl">
+              <div class="w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center text-xl">
                 🏆
               </div>
             </div>
@@ -59,7 +59,7 @@ const processedCerts = await Promise.all(
               href={cert.data.link} 
               target="_blank" 
               rel="noopener noreferrer" 
-              class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-accent transition-colors"
             >
               {t('certifications.verify')} <span class="ml-1">&nearr;</span>
             </a>
