@@ -51,3 +51,50 @@ html[data-accent="magenta"] { --accent: #ec4899; --accent-glow: rgba(236, 72, 15
 @utility bg-accent { background-color: var(--accent); }
 @utility text-accent { color: var(--accent); }
 @utility border-accent { border-color: var(--accent); }
+
+/* --- SCROLLBAR NATIVE PERSONNALISÉE ET DYNAMIQUE --- */
+
+/* Pour Chrome, Safari, Edge et Opera */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent); /* Utilise directement la couleur active ! */
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.2); /* S'éclaircit légèrement au survol */
+}
+
+/* Pour Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+/* --- MASQUER LE CURSEUR NATIF --- */
+@media (min-width: 768px) {
+  /* On cache le curseur sur tout le document pour les écrans de bureau */
+  html, body, *, *:hover {
+    cursor: none !important;
+  }
+}
+
+/* --- SURLIGNAGE DE TEXTE TRANSPARENT ET DYNAMIQUE --- */
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: inherit; /* Garde la couleur naturelle du texte pour une lisibilité parfaite */
+}
+
+::-moz-selection {
+  background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: inherit;
+}

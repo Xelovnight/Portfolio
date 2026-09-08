@@ -1,0 +1,108 @@
+---
+// Composant du curseur personnalisé : fluide, coloré et actif uniquement en mouvement
+---
+
+<div 
+  id="custom-cursor" 
+  style="border-color: var(--accent); background-color: color-mix(in srgb, var(--accent) 20%, transparent); transform: translate(-50%, -50%) scale(1);"
+  class="fixed pointer-events-none z-50 w-8 h-8 rounded-full border-[1.5px] backdrop-blur-[1px] transition-transform duration-200 ease-out hidden md:block"
+></div>
+
+<script>
+  const cursor = document.getElementById('custom-cursor');
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let cursorX = mouseX;
+  let cursorY = mouseY;
+  
+  const speed = 0.15;
+  let lastSpawnTime = 0;
+  let lastMoveTime = 0; // Permet de suivre le moment du dernier mouvement
+
+  // Enregistrement de la position et de l'heure du dernier mouvement de souris
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    lastMoveTime = performance.now();
+  });
+
+  // Fonction pour créer un pixel évaporé
+  function spawnPixel(x: number, y: number) {
+    const pixel = document.createElement('div');
+    pixel.className = 'fixed pointer-events-none z-40 rounded-[2px] hidden md:block';
+    
+    const size = Math.random() * 3 + 4; // Taille entre 4px et 7px
+    pixel.style.width = `${size}px`;
+    pixel.style.height = `${size}px`;
+    pixel.style.backgroundColor = 'var(--accent)';
+    
+    const offsetX = (Math.random() - 0.5) * 15;
+    const offsetY = (Math.random() - 0.5) * 15;
+    pixel.style.left = `${x + offsetX}px`;
+    pixel.style.top = `${y + offsetY}px`;
+    pixel.style.transform = 'translate(-50%, -50%)';
+    pixel.style.transition = 'all 0.6s ease-out';
+    pixel.style.opacity = '0.7';
+
+    document.body.appendChild(pixel);
+
+    const destX = (Math.random() - 0.5) * 60;
+    const destY = (Math.random() - 0.5) * 60;
+
+    requestAnimationFrame(() => {
+      pixel.style.transform = `translate(-50%, -50%) translate(${destX}px, ${destY}px) scale(0)`;
+      pixel.style.opacity = '0';
+    });
+
+    setTimeout(() => {
+      pixel.remove();
+    }, 600);
+  }
+
+  // Boucle d'animation principale
+  function animate(timestamp: number) {
+    cursorX += (mouseX - cursorX) * speed;
+    cursorY += (mouseY - cursorY) * speed;
+
+    if (cursor) {
+      cursor.style.left = `${cursorX}px`;
+      cursor.style.top = `${cursorY}px`;
+    }
+
+    // Vérifie si la souris a bougé au cours des 150 dernières millisecondes
+    const isMoving = (performance.now() - lastMoveTime) < 150;
+
+    // Les pixels ne se génèrent que si la souris est en mouvement
+    if (isMoving && timestamp - lastSpawnTime > 80) {
+      spawnPixel(cursorX, cursorY);
+      lastSpawnTime = timestamp;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  // Gestion du zoom au survol des éléments interactifs
+  const handleElementHover = () => {
+    const interactives = document.querySelectorAll('a, button, input, textarea, select, [role="button"]');
+    
+    interactives.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (cursor) {
+          cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+          cursor.style.backgroundColor = 'color-mix(in srgb, var(--accent) 40%, transparent)';
+        }
+      });
+      el.addEventListener('mouseleave', () => {
+        if (cursor) {
+          cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+          cursor.style.backgroundColor = 'color-mix(in srgb, var(--accent) 20%, transparent)';
+        }
+      });
+    });
+  };
+
+  handleElementHover();
+</script>

@@ -5,6 +5,7 @@ import LangSwitch from '../components/LangSwitch.astro';
 import { getLangFromUrl } from '../i18n/utils';
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
+import CustomCursor from '../components/CustomCursor.astro';
 
 // On permet au Layout d'accepter un titre dynamique pour l'onglet du navigateur
 const { title } = Astro.props;
@@ -40,7 +41,7 @@ const lang = getLangFromUrl(Astro.url);
   </head>
   <!-- On utilise zinc-950 (presque noir), antialiased pour lisser la police, et on stylise la sélection de texte -->
   <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-200 transition-colors duration-300 antialiased selection:bg-blue-500/30 flex flex-col min-h-screen">    
-  
+    <CustomCursor />
     <Navbar />
     
     <LangSwitch />
