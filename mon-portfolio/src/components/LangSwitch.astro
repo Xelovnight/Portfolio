@@ -1,16 +1,16 @@
 ---
 import { getLangFromUrl } from '../i18n/utils';
 
-// On récupère l'URL complète de la page actuelle
-const { pathname } = Astro.url;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathname = Astro.url.pathname.replace(new RegExp(`^${basePath}`), '') || '/';
 const lang = getLangFromUrl(Astro.url);
 
-let targetPath = '/';
+let targetPath = `${basePath}/`;
 
 if (lang === 'fr') {
-  targetPath = pathname === '/' ? '/en/' : `/en${pathname}`;
+  targetPath = pathname === '/' ? `${basePath}/en/` : `${basePath}/en${pathname}`;
 } else {
-  targetPath = pathname.replace(/^\/en/, '') || '/';
+  targetPath = pathname.startsWith('/en/') ? `${basePath}${pathname.replace(/^\/en/, '') || '/'}` : `${basePath}${pathname || '/'}`;
 }
 
 const buttonText = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
