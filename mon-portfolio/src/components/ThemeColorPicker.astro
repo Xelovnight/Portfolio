@@ -1,0 +1,84 @@
+---
+const colors = [
+  { id: 'orange', name: 'Orange', bg: 'bg-orange-500' },
+  { id: 'amber', name: 'Amber', bg: 'bg-amber-500' },
+  { id: 'lime', name: 'Lime', bg: 'bg-lime-500' },
+  { id: 'emerald', name: 'Emerald', bg: 'bg-emerald-500' },
+  { id: 'teal', name: 'Teal', bg: 'bg-teal-500' },
+  { id: 'cyan', name: 'Cyan', bg: 'bg-cyan-500' },
+  { id: 'sky', name: 'Sky', bg: 'bg-sky-500' },
+  { id: 'blue', name: 'Blue', bg: 'bg-blue-500' },
+  { id: 'indigo', name: 'Indigo', bg: 'bg-indigo-500' },
+  { id: 'violet', name: 'Violet', bg: 'bg-violet-500' },
+  { id: 'purple', name: 'Purple', bg: 'bg-purple-500' },
+  { id: 'magenta', name: 'Magenta', bg: 'bg-pink-500' },
+];
+---
+
+<div class="relative">
+  <!-- Bouton principal pour ouvrir le menu de couleurs -->
+  <button 
+    id="theme-menu-btn" 
+    type="button" 
+    class="w-10 h-10 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none"
+    aria-label="Select color theme"
+  >
+    <div id="current-color-dot" class="w-5 h-5 rounded-full bg-accent transition-colors"></div>
+  </button>
+
+  <!-- Le Popover / Menu déroulant -->
+  <div 
+    id="theme-dropdown" 
+    class="hidden absolute right-0 mt-3 w-64 p-4 bg-zinc-950/90 dark:bg-zinc-950/95 backdrop-blur-xl border border-zinc-800 rounded-3xl shadow-2xl z-50 text-white"
+  >
+    <div class="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3 px-1">
+      Colour theme
+    </div>
+    
+    <div class="grid grid-cols-4 gap-3">
+      {colors.map((c) => (
+        <button
+          type="button"
+          data-color={c.id}
+          class="color-option flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-zinc-900 transition-all group focus:outline-none"
+        >
+          <div class={`w-7 h-7 rounded-full ${c.bg} transition-transform group-hover:scale-110 shadow-md`}></div>
+          <span class="text-[11px] text-zinc-400 group-hover:text-white transition-colors">{c.name}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById('theme-menu-btn');
+  const dropdown = document.getElementById('theme-dropdown');
+
+  // Afficher / Masquer le menu au clic
+  btn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown?.classList.toggle('hidden');
+  });
+
+  // Fermer le menu si on clique en dehors
+  document.addEventListener('click', () => {
+    dropdown?.classList.add('hidden');
+  });
+
+  dropdown?.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  // Gestion du choix d'une couleur
+  const colorOptions = document.querySelectorAll('.color-option');
+  colorOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const selectedColor = option.getAttribute('data-color');
+      if (selectedColor) {
+        document.documentElement.setAttribute('data-accent', selectedColor);
+        localStorage.setItem('accent', selectedColor);
+        dropdown?.classList.add('hidden');
+      }
+    });
+  });
+</script>

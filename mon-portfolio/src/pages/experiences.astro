@@ -1,0 +1,84 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 1. Récupération et tri des expériences
+const allExperiences = await getCollection('experiences');
+const frExperiences = allExperiences.filter(exp => exp.id.startsWith('fr/') || exp.id.startsWith('fr\\'));
+const sortedExperiences = frExperiences.sort((a, b) => new Date(b.data.startDate).valueOf() - new Date(a.data.startDate).valueOf());
+
+// 2. Préparation du Markdown
+const processedExperiences = await Promise.all(
+  sortedExperiences.map(async (exp) => {
+    const { Content } = await render(exp);
+    return { ...exp, Content };
+  })
+);
+
+// Petite fonction pour formater les dates proprement (ex: "Avril 2026")
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString(lang, { month: 'long', year: 'numeric' });
+};
+---
+
+<BaseLayout title={`${t('experiences.title')} | Portfolio`}>
+  <main class="max-w-4xl mx-auto p-8 pt-16">
+    
+    <header class="mb-20 text-center">
+      <h1 
+        class="text-5xl font-extrabold mb-4 pb-2 bg-clip-text text-transparent tracking-tight leading-[1.15]"
+        style="background-image: linear-gradient(to right, var(--gradient-start), var(--accent));"
+      >
+        {t('experiences.title')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+        {t('experiences.subtitle')}
+      </p>
+    </header>
+
+    <!-- La Frise Chronologique (Timeline) -->
+    <div class="relative border-l border-gray-200 dark:border-gray-800 ml-4 md:ml-0">
+      
+      {processedExperiences.map((exp) => (
+        <div class="mb-12 ml-10 relative">
+          <!-- Le point sur la ligne -->
+          <span class="absolute flex items-center justify-center w-6 h-6 bg-accent/10 rounded-full -left-[52px] ring-8 ring-white dark:ring-gray-950">
+            <div class="w-2.5 h-2.5 bg-accent rounded-full"></div>
+          </span>
+          
+          <!-- Le contenu de l'expérience -->
+          <article class="p-6 bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{exp.data.role}</h3>
+              
+              <div class="text-sm font-medium text-accent bg-accent/10 px-3 py-1 rounded-full w-fit mt-2 md:mt-0 capitalize">
+                {formatDate(exp.data.startDate)} - {exp.data.endDate ? formatDate(exp.data.endDate) : t('experiences.present')}
+              </div>
+            </div>
+            
+            <h4 class="text-lg font-medium text-gray-600 dark:text-gray-400 mb-4">{exp.data.company}</h4>
+            
+            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 mb-6">
+              <exp.Content />
+            </div>
+            
+            <!-- Les compétences -->
+            <div class="flex flex-wrap gap-2">
+              {exp.data.skills.map((skill: string) => (
+                <span class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </article>
+        </div>
+      ))}
+      
+    </div>
+
+  </main>
+</BaseLayout>

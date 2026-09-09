@@ -1,0 +1,125 @@
+/* On importe le moteur de Tailwind v4 */
+@import "tailwindcss";
+
+/* On active le plugin de typographie pour tes descriptions Markdown */
+@plugin "@tailwindcss/typography";
+
+/* On indique à Tailwind v4 qu'on utilise la classe .dark pour notre bouton Mode Sombre */
+@custom-variant dark (&:is(.dark *));
+
+/* Animation de défilement infini */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Se décale de 50% car on va doubler le contenu */
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+/* Effet de fondu sur les bords gauche et droite */
+.mask-edges {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* --- SYSTÈME DE THÈMES DE COULEURS --- */
+:root {
+  --accent: #3b82f6; /* Bleu par défaut */
+  --accent-glow: rgba(59, 130, 246, 0.6);
+}
+
+html[data-accent="orange"] { --accent: #f97316; --accent-glow: rgba(249, 115, 22, 0.6); }
+html[data-accent="amber"] { --accent: #f59e0b; --accent-glow: rgba(245, 158, 11, 0.6); }
+html[data-accent="lime"] { --accent: #84cc16; --accent-glow: rgba(132, 204, 22, 0.6); }
+html[data-accent="emerald"] { --accent: #10b981; --accent-glow: rgba(16, 185, 129, 0.6); }
+html[data-accent="teal"] { --accent: #14b8a6; --accent-glow: rgba(20, 184, 166, 0.6); }
+html[data-accent="cyan"] { --accent: #06b6d4; --accent-glow: rgba(6, 182, 212, 0.6); }
+html[data-accent="sky"] { --accent: #0ea5e9; --accent-glow: rgba(14, 165, 233, 0.6); }
+html[data-accent="blue"] { --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.6); }
+html[data-accent="indigo"] { --accent: #6366f1; --accent-glow: rgba(99, 102, 241, 0.6); }
+html[data-accent="violet"] { --accent: #8b5cf6; --accent-glow: rgba(139, 92, 246, 0.6); }
+html[data-accent="purple"] { --accent: #a855f7; --accent-glow: rgba(168, 85, 247, 0.6); }
+html[data-accent="magenta"] { --accent: #ec4899; --accent-glow: rgba(236, 72, 153, 0.6); }
+
+/* Utilitaires Tailwind v4 dynamiques */
+@utility bg-accent { background-color: var(--accent); }
+@utility text-accent { color: var(--accent); }
+@utility border-accent { border-color: var(--accent); }
+
+/* --- SCROLLBAR NATIVE PERSONNALISÉE ET DYNAMIQUE --- */
+
+/* Pour Chrome, Safari, Edge et Opera */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent); /* Utilise directement la couleur active ! */
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.2); /* S'éclaircit légèrement au survol */
+}
+
+/* Pour Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+/* --- MASQUER LE CURSEUR NATIF --- */
+@media (min-width: 768px) {
+  /* On cache le curseur sur tout le document pour les écrans de bureau */
+  html, body, *, *:hover {
+    cursor: none !important;
+  }
+}
+
+/* --- SURLIGNAGE DE TEXTE TRANSPARENT ET DYNAMIQUE --- */
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: inherit; /* Garde la couleur naturelle du texte pour une lisibilité parfaite */
+}
+
+::-moz-selection {
+  background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: inherit;
+}
+
+/* --- COULEUR DE DÉPART DES TITRES (Clair / Sombre) --- */
+:root {
+  --gradient-start: #fdfdff; /* Noir/Zinc foncé en mode clair */
+}
+
+.dark, html.dark {
+  --gradient-start: #ffffff; /* Blanc en mode sombre */
+}
+
+/* --- ANIMATION BORDURE MODALE (PULSE DYNAMIQUE) --- */
+@keyframes modalBorderPulse {
+  0% {
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  50% {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  100% {
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+}
+
+.animated-modal {
+  border: 2px solid var(--accent);
+  animation: modalBorderPulse 3s infinite ease-in-out;
+}

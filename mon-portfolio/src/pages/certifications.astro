@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 1. Récupération et tri des certifications
+const allCerts = await getCollection('certifications');
+const frCerts = allCerts.filter(cert => cert.id.startsWith('fr/') || cert.id.startsWith('fr\\'));
+const sortedCerts = frCerts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+const processedCerts = await Promise.all(
+  sortedCerts.map(async (cert) => {
+    const { Content } = await render(cert);
+    return { ...cert, Content };
+  })
+);
+---
+
+<BaseLayout title={`${t('certifications.title')} | Portfolio`}>
+  <main class="max-w-5xl mx-auto p-8 pt-16">
+    
+    <header class="mb-16 text-center">
+      <h1 
+        class="text-5xl font-extrabold mb-4 pb-2 bg-clip-text text-transparent tracking-tight leading-[1.15]"
+        style="background-image: linear-gradient(to right, var(--gradient-start), var(--accent));"
+      >
+        {t('certifications.title')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+        {t('certifications.subtitle')}
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {processedCerts.map((cert) => (
+        <article class="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{cert.data.title}</h2>
+                <p class="text-accent font-medium">{cert.data.issuer}</p>
+              </div>
+              <div class="w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center text-xl">
+                🏆
+              </div>
+            </div>
+            
+            <time class="text-sm text-gray-500 dark:text-gray-400 block mb-4 capitalize">
+              {t('home.madeIn').replace('Projet réalisé en', 'Obtenue en').replace('Project made in', 'Earned in')} {cert.data.date.toLocaleDateString(lang, { month: 'long', year: 'numeric' })}
+            </time>
+            
+            <div class="prose prose-sm dark:prose-invert text-gray-600 dark:text-gray-300 mb-6">
+              <cert.Content />
+            </div>
+          </div>
+
+          {cert.data.link && (
+            <a 
+              href={cert.data.link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white hover:text-accent transition-colors"
+            >
+              {t('certifications.verify')} <span class="ml-1">&nearr;</span>
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
+
+  </main>
+</BaseLayout>
