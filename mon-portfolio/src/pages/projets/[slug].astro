@@ -1,20 +1,26 @@
 ---
 import { getCollection, render } from 'astro:content';
 
-// 1. Cette fonction dit à Astro quelles pages générer lors du build
+// 1. Définition des routes avec une sécurité absolue
 export async function getStaticPaths() {
   const projets = await getCollection('projets');
-  
-  return projets.map(projet => ({
-    params: { slug: projet.id }, // L'URL de la page (ex: /projets/mon-projet)
-    props: { projet },           // Les données passées à la page
-  }));
+
+  return projets
+    .filter((projet) => projet.id.startsWith('fr/') || projet.id.startsWith('fr\\'))
+    .map((projet) => {
+      const slug = projet.id.replace(/^fr\//, '').replace(/^fr\\/, '');
+
+      return {
+        params: { slug },
+        props: { projet },
+      };
+    });
 }
 
-// 2. On récupère les propriétés du projet courant
+// 2. On récupère les propriétés du projet
 const { projet } = Astro.props;
 
-// 3. On demande à Astro de préparer le contenu Markdown pour l'affichage
+// 3. On prépare le contenu Markdown
 const { Content } = await render(projet);
 ---
 
@@ -24,25 +30,25 @@ const { Content } = await render(projet);
     <meta name="viewport" content="width=device-width" />
     <title>{projet.data.title} | Enzo Jungers</title>
   </head>
-  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <main class="max-w-3xl mx-auto p-8">
+  <body class="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300">
+    <main class="max-w-3xl mx-auto p-8 pt-16">
       
       <!-- Bouton retour -->
-      <a href="/" class="text-accent hover:underline mb-8 inline-block">
-        &larr; Retour à l'accueil
+      <a href="/projects" class="text-accent hover:underline mb-8 inline-block font-semibold">
+        &larr; Retour aux projets
       </a>
 
       <!-- En-tête du projet -->
       <header class="mb-10">
         <h1 class="text-4xl font-bold mb-4">{projet.data.title}</h1>
         
-        <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <div class="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 mb-6">
           <time>{projet.data.date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</time>
         </div>
 
         <div class="flex flex-wrap gap-2">
           {projet.data.tags.map((tag: string) => (
-            <span class="bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+            <span class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full text-sm font-semibold">
               {tag}
             </span>
           ))}
@@ -50,7 +56,7 @@ const { Content } = await render(projet);
       </header>
 
       <!-- Le contenu du fichier Markdown s'injecte ici -->
-      <article class="prose prose-lg dark:prose-invert max-w-none">
+      <article class="prose prose-lg dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 prose-headings:font-bold prose-headings:text-zinc-900 dark:prose-headings:text-zinc-100">
         <Content />
       </article>
 
