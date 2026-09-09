@@ -155,7 +155,7 @@ const processedCerts = await Promise.all(
           {t('home.latestExperiences')}
         </h2>
         <!-- Lien vers la page complète des expériences -->
-        <a href={`${import.meta.env.BASE_URL}experiences`} class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
+        <a href={`${import.meta.env.BASE_URL}/experiences`} class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
           <Fragment set:html={t('home.allExperiences')} />
         </a>
       </div>
@@ -197,7 +197,7 @@ const processedCerts = await Promise.all(
 
       <!-- Lien visible sur mobile -->
       <div class="mt-6 text-center md:hidden">
-        <a href={`${import.meta.env.BASE_URL}experiences`} class="text-accent hover:underline text-sm font-semibold">
+        <a href={`${import.meta.env.BASE_URL}/experiences`} class="text-accent hover:underline text-sm font-semibold">
           <Fragment set:html={t('home.allExperiences')} />
         </a>
       </div>
@@ -211,7 +211,7 @@ const processedCerts = await Promise.all(
           {t('home.latestCertifications')}
         </h2>
         <!-- Lien vers la page complète -->
-        <a href={`${import.meta.env.BASE_URL}certifications`} class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
+        <a href={`${import.meta.env.BASE_URL}/certifications`} class="text-accent hover:underline text-sm font-semibold hidden md:inline-block">
           <Fragment set:html={t('home.allCertifications')} />
         </a>
       </div>
@@ -251,7 +251,7 @@ const processedCerts = await Promise.all(
 
       <!-- Lien visible uniquement sur mobile -->
       <div class="mt-6 text-center md:hidden">
-        <a href={`${import.meta.env.BASE_URL}certifications`} class="text-accent hover:underline text-sm font-semibold">
+        <a href={`${import.meta.env.BASE_URL}/certifications`} class="text-accent hover:underline text-sm font-semibold">
           <Fragment set:html={t('home.allCertifications')} />
         </a>
       </div>
