@@ -1,49 +1,9 @@
-# name: Deploy to GitHub Pages
-
-# on:
-#   push:
-#     branches:
-#       - "**"
-
-# jobs:
-#   build-and-deploy:
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: write
-
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 22
-#           cache: npm
-
-#       - name: Install dependencies
-#         run: npm ci
-
-#       - name: Build site
-#         run: npm run build
-
-#       - name: Deploy to GitHub Pages
-#         uses: peaceiris/actions-gh-pages@v3
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           publish_branch: gh-pages
-#           publish_dir: ./dist
-#           force_orphan: true
-#           keep_files: false
-#           user_name: github-actions[bot]
-#           user_email: 41898282+github-actions[bot]@users.noreply.github.com
-
 name: Deploy Astro site to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["dev"]
+    branches: ["main","dev"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -61,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "." # By default, the root directory.
+  BUILD_PATH: "./mon-portfolio" # By default, the root directory.
 
 jobs:
   build:
