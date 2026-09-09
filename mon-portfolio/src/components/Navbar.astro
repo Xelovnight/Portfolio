@@ -7,8 +7,9 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const getPath = (path: string) => {
-  if (path === '/') return lang === 'fr' ? '/' : '/en/';
-  return lang === 'fr' ? path : `/en${path}`;
+  const normalizedPath = path.replace(/^\/+/, '');
+  if (path === '/') return import.meta.env.BASE_URL;
+  return `${import.meta.env.BASE_URL}${lang === 'fr' ? normalizedPath : `en/${normalizedPath}`}`;
 };
 
 let currentPath = Astro.url.pathname.replace(/^\/en/, '');

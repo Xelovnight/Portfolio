@@ -34,7 +34,7 @@ const { Content } = await render(projet);
     <main class="max-w-3xl mx-auto p-8 pt-16">
       
       <!-- Bouton retour -->
-      <a href="/projects" class="text-accent hover:underline mb-8 inline-block font-semibold">
+      <a href={`${import.meta.env.BASE_URL}projects`} class="text-accent hover:underline mb-8 inline-block font-semibold">
         &larr; Retour aux projets
       </a>
 
