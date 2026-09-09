@@ -5,14 +5,15 @@ import ThemeColorPicker from './ThemeColorPicker.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const getPath = (path: string) => {
   const normalizedPath = path.replace(/^\/+/, '');
-  if (path === '/') return import.meta.env.BASE_URL;
-  return `${import.meta.env.BASE_URL}/${lang === 'fr' ? normalizedPath : `en/${normalizedPath}`}`;
+  if (path === '/') return lang === 'fr' ? basePath : `${basePath}/en/`;
+  return lang === 'fr' ? `${basePath}/${normalizedPath}` : `${basePath}/en/${normalizedPath}`;
 };
 
-let currentPath = Astro.url.pathname.replace(/^\/en/, '');
+let currentPath = Astro.url.pathname.replace(new RegExp(`^${basePath}`), '').replace(/^\/en/, '');
 if (currentPath.length > 1 && currentPath.endsWith('/')) {
   currentPath = currentPath.slice(0, -1);
 }

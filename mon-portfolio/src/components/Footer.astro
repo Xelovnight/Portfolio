@@ -4,12 +4,13 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const currentYear = new Date().getFullYear();
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // Fonction pour gérer les liens selon la langue active
 const getPath = (path: string) => {
   const normalizedPath = path.replace(/^\/+/, '');
-  if (path === '/') return import.meta.env.BASE_URL;
-  return `${import.meta.env.BASE_URL}/${lang === 'fr' ? normalizedPath : `en/${normalizedPath}`}`;
+  if (path === '/') return lang === 'fr' ? basePath : `${basePath}/en/`;
+  return lang === 'fr' ? `${basePath}/${normalizedPath}` : `${basePath}/en/${normalizedPath}`;
 };
 ---
 
