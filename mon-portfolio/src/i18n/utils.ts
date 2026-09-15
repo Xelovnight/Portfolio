@@ -1,21 +1,21 @@
 import { ui, defaultLang } from './ui';
 
 export function getLangFromUrl(url: URL) {
-  // 1. On retire le chemin de base
-  const baseUrl = import.meta.env.BASE_URL;
-  let pathWithoutBase = url.pathname.replace(baseUrl, '/');
+  let base = import.meta.env.BASE_URL;
+  if (base.endsWith('/')) base = base.slice(0, -1);
 
-  // Sécurité : éviter les doubles slashs
-  pathWithoutBase = pathWithoutBase.replace('//', '/');
+  let pathWithoutBase = url.pathname;
+  if (pathWithoutBase.startsWith(base)) {
+    pathWithoutBase = pathWithoutBase.slice(base.length);
+  }
+  if (!pathWithoutBase.startsWith('/')) pathWithoutBase = '/' + pathWithoutBase;
 
-  // 2. On extrait la langue
   const [, lang] = pathWithoutBase.split('/');
 
   if (lang in ui) return lang as keyof typeof ui;
   return defaultLang;
 }
 
-// 3. LA FONCTION MANQUANTE RESTAURÉE POUR TES TRADUCTIONS
 export function useTranslations(lang: keyof typeof ui) {
   return function t(key: keyof typeof ui[typeof defaultLang]) {
     return ui[lang][key] || ui[defaultLang][key];
@@ -24,22 +24,29 @@ export function useTranslations(lang: keyof typeof ui) {
 
 export function useTranslatedPath(lang: keyof typeof ui) {
   return function translatePath(path: string, l: string = lang) {
-    // 1. On s'assure que le chemin demandé commence bien par un slash
+    // 1. On gère le préfixe de la langue (vide pour le FR, '/en' pour l'anglais)
+    const langPrefix = l === defaultLang ? '' : `/${l}`;
+    
+    // 2. On s'assure que le chemin de la page a bien un slash au début
     const safePath = path.startsWith('/') ? path : `/${path}`;
     
-    // 2. On ajoute la langue si ce n'est pas le français (ex: "/en/certifications" ou "/certifications")
-    let pathName = l === defaultLang ? safePath : `/${l}${safePath}`;
-
-    // Sécurité anti double-slash (si path valait "/")
-    pathName = pathName.replace('//', '/');
-
-    // 3. On récupère le BASE_URL et on force la suppression de son slash final s'il en a un
+    // 3. On assemble la langue et la page
+    let fullPath = `${langPrefix}${safePath}`;
+    
+    // 4. On récupère la base (ex: "/Portfolio")
     let base = import.meta.env.BASE_URL;
+    
+    // 5. SÉCURITÉ ABSOLUE : On force la base à ne PAS avoir de slash à la fin...
     if (base.endsWith('/')) {
       base = base.slice(0, -1);
     }
+    
+    // ...et on force la suite à TOUJOURS avoir un slash au début
+    if (!fullPath.startsWith('/')) {
+      fullPath = `/${fullPath}`;
+    }
 
-    // 4. On colle le BASE_URL (sans slash à la fin) avec le chemin (qui a un slash au début)
-    return `${base}${pathName}`;
+    // L'assemblage sera toujours parfait : "/Portfolio" + "/en/a-propos"
+    return `${base}${fullPath}`;
   }
 }
