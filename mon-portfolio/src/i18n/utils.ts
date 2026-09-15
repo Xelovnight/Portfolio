@@ -24,11 +24,22 @@ export function useTranslations(lang: keyof typeof ui) {
 
 export function useTranslatedPath(lang: keyof typeof ui) {
   return function translatePath(path: string, l: string = lang) {
-    // On gère le préfixe
-    const pathName = l === defaultLang ? path : `/${l}${path}`;
-    // On nettoie
-    const cleanPath = pathName.startsWith('/') ? pathName.slice(1) : pathName;
-    // On retourne l'URL absolue
-    return `${import.meta.env.BASE_URL}${cleanPath}`;
+    // 1. On s'assure que le chemin demandé commence bien par un slash
+    const safePath = path.startsWith('/') ? path : `/${path}`;
+    
+    // 2. On ajoute la langue si ce n'est pas le français (ex: "/en/certifications" ou "/certifications")
+    let pathName = l === defaultLang ? safePath : `/${l}${safePath}`;
+
+    // Sécurité anti double-slash (si path valait "/")
+    pathName = pathName.replace('//', '/');
+
+    // 3. On récupère le BASE_URL et on force la suppression de son slash final s'il en a un
+    let base = import.meta.env.BASE_URL;
+    if (base.endsWith('/')) {
+      base = base.slice(0, -1);
+    }
+
+    // 4. On colle le BASE_URL (sans slash à la fin) avec le chemin (qui a un slash au début)
+    return `${base}${pathName}`;
   }
 }
