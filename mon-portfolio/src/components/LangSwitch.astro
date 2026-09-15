@@ -1,24 +1,28 @@
 ---
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
 
-const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
-const pathname = Astro.url.pathname.replace(new RegExp(`^${basePath}`), '') || '/';
+// On récupère la langue actuelle
 const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
 
-let targetPath = `${basePath}/`;
+// On isole le nom de la page courante (sans le BASE_URL et sans la langue)
+const baseUrl = import.meta.env.BASE_URL;
+let route = Astro.url.pathname.replace(baseUrl, '/').replace('//', '/');
 
-if (lang === 'fr') {
-  targetPath = pathname === '/' ? `${basePath}/en/` : `${basePath}/en${pathname}`;
-} else {
-  targetPath = pathname.startsWith('/en/') ? `${basePath}${pathname.replace(/^\/en/, '') || '/'}` : `${basePath}${pathname || '/'}`;
+if (route.startsWith(`/${lang}/`)) {
+  route = route.replace(`/${lang}/`, '/');
+} else if (route === `/${lang}`) {
+  route = '/';
 }
 
-const buttonText = lang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+// On génère les liens propres pour les drapeaux/boutons
+const frUrl = translatePath(route, 'fr');
+const enUrl = translatePath(route, 'en');
 ---
 
-<a 
-  href={targetPath} 
-  class="fixed top-6 right-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-700 font-medium text-sm hover:scale-105 transition-transform z-50"
->
-  {buttonText}
-</a>
+<!-- Ton design de bouton de langue (à adapter selon ton CSS) -->
+<div class="flex items-center gap-3">
+  <a href={frUrl} class={`hover:text-accent transition-colors ${lang === 'fr' ? 'font-bold text-accent' : ''}`}>FR</a>
+  <span class="text-zinc-400">|</span>
+  <a href={enUrl} class={`hover:text-accent transition-colors ${lang === 'en' ? 'font-bold text-accent' : ''}`}>EN</a>
+</div>
