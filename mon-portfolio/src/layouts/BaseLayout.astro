@@ -1,7 +1,6 @@
 ---
 // src/layouts/BaseLayout.astro
 import Navbar from '../components/Navbar.astro';
-import LangSwitch from '../components/LangSwitch.astro';
 import { getLangFromUrl } from '../i18n/utils';
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
@@ -44,7 +43,6 @@ const lang = getLangFromUrl(Astro.url);
     <CustomCursor />
     <Navbar />
     
-    <LangSwitch />
 
     <!-- C'est ICI que le contenu de tes pages (index, projets, etc.) sera injecté -->
      
