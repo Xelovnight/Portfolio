@@ -1,28 +1,33 @@
 ---
 import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
 
-// On récupère la langue actuelle
+// 1. On récupère la langue actuelle
 const lang = getLangFromUrl(Astro.url);
 const translatePath = useTranslatedPath(lang);
 
-// On isole le nom de la page courante (sans le BASE_URL et sans la langue)
+// 2. On isole le nom de la page courante (sans le BASE_URL)
 const baseUrl = import.meta.env.BASE_URL;
 let route = Astro.url.pathname.replace(baseUrl, '/').replace('//', '/');
 
+// On retire la langue de l'URL courante pour avoir la route "pure"
 if (route.startsWith(`/${lang}/`)) {
   route = route.replace(`/${lang}/`, '/');
 } else if (route === `/${lang}`) {
   route = '/';
 }
 
-// On génère les liens propres pour les drapeaux/boutons
-const frUrl = translatePath(route, 'fr');
-const enUrl = translatePath(route, 'en');
+// 3. Logique de bascule (Toggle) : on détermine la langue cible
+const targetLang = lang === 'fr' ? 'en' : 'fr';
+
+// On calcule le lien parfait vers l'autre langue
+const targetUrl = translatePath(route, targetLang);
 ---
 
-<!-- Ton design de bouton de langue (à adapter selon ton CSS) -->
-<div class="flex items-center gap-3">
-  <a href={frUrl} class={`hover:text-accent transition-colors ${lang === 'fr' ? 'font-bold text-accent' : ''}`}>FR</a>
-  <span class="text-zinc-400">|</span>
-  <a href={enUrl} class={`hover:text-accent transition-colors ${lang === 'en' ? 'font-bold text-accent' : ''}`}>EN</a>
-</div>
+<a 
+  href={targetUrl} 
+  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-accent dark:hover:text-accent hover:border-accent dark:hover:border-accent transition-all duration-300 font-bold text-sm shadow-sm"
+  aria-label={`Passer au site en ${targetLang.toUpperCase()}`}
+  title={`Passer au site en ${targetLang.toUpperCase()}`}
+>
+  {targetLang.toUpperCase()}
+</a>
