@@ -43,7 +43,7 @@ export const ui = {
     'about.contactMe': 'Me contacter',
     // contact page :
     'contact.title': 'Contactez-moi',
-    'contact.subtitle': 'Je suis activement à la recherche d\'une alternance pour mon Master MIAGE. N\'hésitez pas à m\'envoyer un message !',
+    'contact.subtitle': 'Une question sur mes projets ou une idée à partager ? N\'hésitez pas à m\'envoyer un message !',
     'contact.name': 'Votre nom',
     'contact.email': 'Votre adresse e-mail',
     'contact.message': 'Votre message',
@@ -90,7 +90,7 @@ export const ui = {
     'about.contactMe': 'Contact Me',
     // contact page :
     'contact.title': 'Get in Touch',
-    'contact.subtitle': 'I am actively seeking a work-study program (alternance) for my MIAGE Master\'s degree. Feel free to drop me a message!',
+    'contact.subtitle': 'A question about my projects or an idea to share? Feel free to send me a message!',
     'contact.name': 'Your name',
     'contact.email': 'Your email address',
     'contact.message': 'Your message',
